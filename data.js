@@ -46,9 +46,7 @@ window.SFS_DATA = {
      (These three are samples — replace them with real stores.)
      ---------------------------------------------------------- */
   stores: [
-    { name: "Example Market",        area: "Suffern, NY",   since: "2026" },
-    { name: "Green Valley Grocers",  area: "Mahwah, NJ",    since: "2026" },
-    { name: "Corner Fresh Foods",    area: "Airmont, NY",   since: "2026" },
+
   ],
 
 };
