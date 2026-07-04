@@ -46,7 +46,8 @@ window.SFS_DATA = {
      (These three are samples — replace them with real stores.)
      ---------------------------------------------------------- */
   stores: [
-
+    // No stores yet. When one signs up, add a line here like:
+    //   { name: "Store name", area: "Town, State", since: "2026" },
   ],
 
 };
