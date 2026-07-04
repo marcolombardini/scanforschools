@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scan for Schools — Turn everyday receipts into funding for local schools</title>
+<meta name="description" content="Scan for Schools places a receipt collection box at your neighborhood grocer. Shoppers drop in receipts, we scan them through Box Tops, and the money goes to local schools.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1EDE1;        /* receipt paper base */
+    --paper-2:#FBF8F0;      /* lighter card */
+    --ink:#1B1913;          /* warm near-black */
+    --ink-soft:#57513f;     /* muted text on paper */
+    --hero-green:#155239;   /* register / grocery green */
+    --green:#18613F;        /* primary green */
+    --green-deep:#0F3D2A;   /* darkest green */
+    --marker:#FFD23F;       /* highlighter yellow (signature pop) */
+    --tag:#E1502F;          /* sale-tag red-orange, used sparingly */
+    --line:#DED7C4;         /* hairline on paper */
+    --line-soft:rgba(255,255,255,.16);
+    --maxw:1140px;
+    --pad:clamp(1.25rem,5vw,2rem);
+    --sec:clamp(4rem,9vw,7.5rem);
+    --r:14px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Figtree",system-ui,sans-serif;
+    font-size:clamp(1rem,0.5vw + 0.9rem,1.09rem);
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;line-height:1.02;letter-spacing:-.015em;margin:0;}
+  p{margin:0;}
+  a{color:inherit;}
+  img,svg{display:block;}
+
+  .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad);}
+  .eyebrow{
+    font-family:"DM Mono",monospace;
+    font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:.55rem;
+  }
+  .eyebrow::before{content:"";width:1.6rem;height:2px;background:currentColor;opacity:.55;}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-family:"DM Mono",monospace;font-size:.82rem;letter-spacing:.02em;
+    padding:.85rem 1.35rem;border-radius:999px;
+    text-decoration:none;border:1.5px solid transparent;cursor:pointer;
+    transition:transform .15s ease, background .2s ease, color .2s ease, border-color .2s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{background:var(--marker);color:var(--ink);}
+  .btn-primary:hover{transform:translateY(-2px);background:#ffdc63;}
+  .btn-ghost{border-color:currentColor;color:inherit;background:transparent;}
+  .btn-ghost:hover{transform:translateY(-2px);background:rgba(255,255,255,.08);}
+  .btn-dark{background:var(--green);color:#fff;}
+  .btn-dark:hover{transform:translateY(-2px);background:var(--green-deep);}
+  .btn .arw{transition:transform .2s ease;}
+  .btn:hover .arw{transform:translateX(3px);}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--hero-green);color:#fff;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:.9rem;}
+  .brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:#fff;font-family:"Bricolage Grotesque";font-weight:700;font-size:1.12rem;letter-spacing:-.01em;}
+  .brand .mark{
+    width:30px;height:30px;border-radius:7px;background:var(--marker);
+    display:grid;place-items:center;color:var(--ink);flex:none;
+  }
+  .brand .mark svg{width:17px;height:17px;}
+  .nav-links{display:flex;align-items:center;gap:1.6rem;}
+  .nav-links a{font-family:"DM Mono",monospace;font-size:.8rem;text-decoration:none;color:rgba(255,255,255,.86);letter-spacing:.02em;transition:color .2s;}
+  .nav-links a:hover{color:#fff;}
+  .nav-cta{display:flex;align-items:center;gap:.75rem;}
+  .menu-btn{display:none;background:none;border:1px solid var(--line-soft);border-radius:9px;color:#fff;width:42px;height:38px;cursor:pointer;align-items:center;justify-content:center;}
+  .menu-btn svg{width:20px;height:20px;}
+
+  /* ---------- hero ---------- */
+  .hero{background:var(--hero-green);color:#fff;position:relative;overflow:hidden;}
+  .hero::after{ /* faint aisle lines */
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;
+    background-image:repeating-linear-gradient(90deg,#fff 0 1px,transparent 1px 84px);
+  }
+  .hero-inner{
+    position:relative;z-index:1;
+    display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,5vw,4rem);
+    align-items:center;padding-block:clamp(3rem,7vw,5.5rem) clamp(3.5rem,8vw,6rem);
+  }
+  .hero h1{font-size:clamp(2.5rem,6vw,4.55rem);}
+  .hero h1 em{font-style:normal;color:var(--marker);}
+  .hero .lead{margin-top:1.4rem;max-width:38ch;color:rgba(255,255,255,.85);font-size:1.12rem;}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem;}
+  .hero-meta{margin-top:2.4rem;display:flex;gap:2.2rem;flex-wrap:wrap;font-family:"DM Mono",monospace;}
+  .hero-meta .n{font-size:1.5rem;color:#fff;font-weight:500;}
+  .hero-meta .l{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.6);}
+
+  /* ---------- signature receipt ---------- */
+  .receipt-stage{display:flex;justify-content:center;perspective:900px;}
+  .receipt{
+    position:relative;width:min(330px,80vw);background:var(--paper-2);color:var(--ink);
+    border-radius:5px 5px 0 0;padding:1.5rem 1.4rem 2.1rem;
+    font-family:"DM Mono",monospace;font-size:.82rem;line-height:1.5;
+    transform:rotate(-2.6deg);
+    box-shadow:0 26px 50px -20px rgba(0,0,0,.55), 0 3px 0 rgba(0,0,0,.06);
+  }
+  .receipt::after{ /* torn zigzag bottom */
+    content:"";position:absolute;left:0;right:0;bottom:-10px;height:11px;
+    background-image:
+      linear-gradient(45deg,var(--hero-green) 50%,transparent 51%),
+      linear-gradient(-45deg,var(--hero-green) 50%,transparent 51%);
+    background-size:13px 11px,13px 11px;
+    background-position:0 0,6.5px 0;
+    background-repeat:repeat-x;
+  }
+  .r-top{text-align:center;padding-bottom:.9rem;border-bottom:1.5px dashed var(--line);}
+  .r-top .store{font-weight:500;letter-spacing:.06em;}
+  .r-top .sub{font-size:.7rem;color:var(--ink-soft);letter-spacing:.05em;}
+  .r-line{display:flex;justify-content:space-between;gap:1rem;margin-top:.5rem;}
+  .r-line .q{color:var(--green);font-size:.72rem;}
+  .r-rule{border-top:1.5px dashed var(--line);margin:.85rem 0;}
+  .r-total{display:flex;justify-content:space-between;align-items:center;font-weight:500;font-size:.9rem;}
+  .hl{position:relative;padding:0 .28em;}
+  .hl > span{position:relative;z-index:1;}
+  .hl::before{
+    content:"";position:absolute;z-index:0;left:-2px;right:-2px;top:6%;bottom:6%;
+    background:var(--marker);transform:skewX(-7deg) scaleX(0);transform-origin:left center;
+    transition:transform .75s cubic-bezier(.2,.75,.2,1);
+  }
+  .hl.lit::before{transform:skewX(-7deg) scaleX(1);}
+  .r-foot{text-align:center;margin-top:1.1rem;font-size:.72rem;color:var(--ink-soft);line-height:1.7;letter-spacing:.04em;}
+  .r-barcode{height:34px;margin-top:.9rem;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 9px);opacity:.82;}
+
+  /* ---------- generic section ---------- */
+  section{padding-block:var(--sec);}
+  .sec-head{max-width:60ch;}
+  .sec-head h2{font-size:clamp(2rem,4.4vw,3.15rem);margin-top:1rem;}
+  .sec-head p{margin-top:1.1rem;color:var(--ink-soft);font-size:1.1rem;}
+
+  /* ---------- how it works ---------- */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:3rem;}
+  .step{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);
+    padding:1.8rem 1.6rem;position:relative;overflow:hidden;
+  }
+  .step .no{font-family:"DM Mono",monospace;font-size:.78rem;letter-spacing:.1em;color:var(--green);}
+  .step .ic{width:44px;height:44px;border-radius:11px;background:var(--hero-green);color:var(--marker);display:grid;place-items:center;margin:1.1rem 0 1.2rem;}
+  .step .ic svg{width:23px;height:23px;}
+  .step h3{font-size:1.32rem;}
+  .step p{margin-top:.6rem;color:var(--ink-soft);font-size:1rem;}
+  .step-link{margin-top:1.1rem;display:inline-block;font-family:"DM Mono",monospace;font-size:.76rem;color:var(--green);text-decoration:none;border-bottom:1.5px solid var(--marker);padding-bottom:1px;}
+
+  /* ---------- box tops band ---------- */
+  .band{background:var(--green-deep);color:#fff;}
+  .band .eyebrow{color:var(--marker);}
+  .band-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:start;}
+  .band h2{font-size:clamp(2rem,4.4vw,3.15rem);margin-top:1rem;color:#fff;}
+  .band .body p{color:rgba(255,255,255,.82);margin-top:1.1rem;}
+  .band .body p + p{margin-top:.9rem;}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden;}
+  .stat{background:var(--green-deep);padding:1.6rem 1.4rem;}
+  .stat .n{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(1.9rem,3.5vw,2.7rem);color:var(--marker);line-height:1;}
+  .stat .l{margin-top:.5rem;font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.03em;text-transform:uppercase;color:rgba(255,255,255,.66);}
+  .disclaim{margin-top:1.6rem;font-size:.82rem;color:rgba(255,255,255,.5);max-width:60ch;}
+
+  /* ---------- for grocers ---------- */
+  .grocer-top{display:grid;grid-template-columns:1fr .9fr;gap:clamp(2rem,5vw,4rem);align-items:end;}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;margin-top:3rem;}
+  .card{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:1.6rem;}
+  .card .ic{width:40px;height:40px;border-radius:10px;background:var(--marker);color:var(--ink);display:grid;place-items:center;margin-bottom:1rem;}
+  .card .ic svg{width:21px;height:21px;}
+  .card h3{font-size:1.16rem;}
+  .card p{margin-top:.5rem;color:var(--ink-soft);font-size:.98rem;}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1.2rem;}
+  .panel{border:1.5px solid var(--line);border-radius:var(--r);padding:1.5rem 1.6rem;background:var(--paper);}
+  .panel h4{margin:0 0 .9rem;font-family:"DM Mono",monospace;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--green);}
+  .panel ul{list-style:none;margin:0;padding:0;display:grid;gap:.7rem;}
+  .panel li{display:flex;gap:.7rem;align-items:flex-start;font-size:.98rem;color:var(--ink);}
+  .panel li svg{width:18px;height:18px;flex:none;margin-top:.2rem;color:var(--green);}
+
+  /* ---------- faq ---------- */
+  .faq{max-width:820px;margin-top:2.5rem;}
+  details{border-top:1px solid var(--line);}
+  details:last-child{border-bottom:1px solid var(--line);}
+  summary{
+    list-style:none;cursor:pointer;padding:1.25rem 0;display:flex;justify-content:space-between;
+    align-items:center;gap:1rem;font-family:"Bricolage Grotesque";font-weight:700;font-size:1.14rem;
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary .plus{flex:none;width:26px;height:26px;position:relative;transition:transform .25s;}
+  summary .plus::before,summary .plus::after{content:"";position:absolute;background:var(--green);border-radius:2px;}
+  summary .plus::before{left:50%;top:4px;bottom:4px;width:2.5px;transform:translateX(-50%);}
+  summary .plus::after{top:50%;left:4px;right:4px;height:2.5px;transform:translateY(-50%);}
+  details[open] summary .plus{transform:rotate(45deg);}
+  details p{padding:0 0 1.3rem;color:var(--ink-soft);max-width:70ch;}
+
+  /* ---------- contact ---------- */
+  .contact{background:var(--hero-green);color:#fff;}
+  .contact .eyebrow{color:var(--marker);}
+  .contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,5vw,4rem);align-items:start;}
+  .contact h2{font-size:clamp(2rem,4.4vw,3.1rem);margin-top:1rem;color:#fff;}
+  .contact .lead{margin-top:1.1rem;color:rgba(255,255,255,.82);}
+  .contact .aside{margin-top:2rem;font-family:"DM Mono",monospace;font-size:.82rem;}
+  .contact .aside a{color:var(--marker);}
+  form{background:var(--paper-2);color:var(--ink);border-radius:var(--r);padding:1.8rem;}
+  .field{margin-bottom:1.05rem;}
+  .field.row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0;}
+  label{display:block;font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;}
+  input,textarea{
+    width:100%;font-family:"Figtree",sans-serif;font-size:1rem;color:var(--ink);
+    background:#fff;border:1.5px solid var(--line);border-radius:9px;padding:.75rem .85rem;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  input:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(24,97,63,.15);}
+  textarea{resize:vertical;min-height:96px;}
+  form .btn-primary{width:100%;justify-content:center;margin-top:.4rem;border:none;}
+  .form-note{margin-top:.85rem;font-size:.78rem;color:var(--ink-soft);text-align:center;}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--green-deep);color:rgba(255,255,255,.7);padding-block:3rem;}
+  .foot-top{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap;align-items:flex-start;}
+  .foot-links{display:flex;gap:1.8rem;flex-wrap:wrap;font-family:"DM Mono",monospace;font-size:.8rem;}
+  .foot-links a{color:rgba(255,255,255,.75);text-decoration:none;}
+  .foot-links a:hover{color:#fff;}
+  .foot-legal{margin-top:2.2rem;padding-top:1.6rem;border-top:1px solid var(--line-soft);font-size:.78rem;line-height:1.6;color:rgba(255,255,255,.5);max-width:75ch;}
+
+  :focus-visible{outline:3px solid var(--marker);outline-offset:2px;border-radius:4px;}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:880px){
+    .hero-inner{grid-template-columns:1fr;gap:2.6rem;}
+    .receipt-stage{order:-1;}
+    .band-grid,.grocer-top,.contact-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+    .cards{grid-template-columns:1fr;}
+    .split{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .nav-cta .btn-ghost{display:none;}
+    .menu-btn{display:inline-flex;}
+    header.open .nav-links{display:flex;flex-direction:column;position:absolute;left:0;right:0;top:100%;background:var(--hero-green);padding:1rem var(--pad) 1.5rem;gap:1rem;border-bottom:1px solid var(--line-soft);}
+  }
+  @media(max-width:520px){
+    .stats{grid-template-columns:1fr;}
+    .field.row{grid-template-columns:1fr;gap:0;}
+    .field.row .field-inner + .field-inner{margin-top:1.05rem;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none!important;animation:none!important;}
+    .reveal{opacity:1;transform:none;}
+    .hl::before{transform:skewX(-7deg) scaleX(1);}
+  }
+</style>
+</head>
+<body>
+
+<header id="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Scan for Schools home">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 9h8M8 13h5"/></svg>
+      </span>
+      Scan&nbsp;for&nbsp;Schools
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#how">How it works</a>
+      <a href="#boxtops">Box Tops</a>
+      <a href="#grocers">For grocers</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#faq">Learn more</a>
+      <a class="btn btn-primary" href="#contact">Host a box <span class="arw">→</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="padding-block:0;">
+    <div class="wrap hero-inner">
+      <div>
+        <span class="eyebrow">Receipts&nbsp;→&nbsp;Classrooms</span>
+        <h1>The receipt in your pocket is worth something to a <em>kid down the street.</em></h1>
+        <p class="lead">Scan for Schools puts a receipt collection box in your neighborhood grocery store. Shoppers drop in receipts on their way out, we scan them through Box Tops, and every earned dime goes to local schools.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#contact">Host a box at your store <span class="arw">→</span></a>
+          <a class="btn btn-ghost" href="#how">See how it works</a>
+        </div>
+        <div class="hero-meta">
+          <div><div class="n">10¢</div><div class="l">Per qualifying item</div></div>
+          <div><div class="n">2 sec</div><div class="l">To drop a receipt</div></div>
+          <div><div class="n">$0</div><div class="l">Cost to the store</div></div>
+        </div>
+      </div>
+
+      <div class="receipt-stage">
+        <div class="receipt" role="img" aria-label="A grocery receipt showing four qualifying products adding up to forty cents for the local school fund.">
+          <div class="r-top">
+            <div class="store">NEIGHBORHOOD&nbsp;GROCER</div>
+            <div class="sub">scan for schools · drop box</div>
+          </div>
+          <div class="r-line"><span>BIG G CEREAL</span><span class="q">✓ earns</span></div>
+          <div class="r-line"><span>GRANOLA BARS</span><span class="q">✓ earns</span></div>
+          <div class="r-line"><span>SANDWICH BAGS</span><span class="q">✓ earns</span></div>
+          <div class="r-line"><span>PAPER TOWELS</span><span class="q">✓ earns</span></div>
+          <div class="r-rule"></div>
+          <div class="r-line"><span>QUALIFYING ITEMS</span><span>4</span></div>
+          <div class="r-total"><span>LOCAL SCHOOL FUND</span><span class="hl" id="hl"><span>+$0.40</span></span></div>
+          <div class="r-rule"></div>
+          <div class="r-foot">THANK YOU FOR SHOPPING<br>NOW DROP ME IN THE BOX<br>BY THE DOOR ♥</div>
+          <div class="r-barcode" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">How it works</span>
+        <h2>A receipt you'd throw away, turned into school funding.</h2>
+        <p>No apps for shoppers, no sign-ups, no cost to the store. Three simple steps stand between a crumpled receipt and a check for a local classroom.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="no">STEP 01</div>
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18l-1.5 11a2 2 0 0 1-2 1.8H6.5a2 2 0 0 1-2-1.8Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/><path d="M12 12v4M10 14h4"/></svg></div>
+          <h3>Shoppers drop it in</h3>
+          <p>After checkout, customers drop their receipt in the Scan for Schools box by the exit. That's the whole ask — no phone, no account, nothing to remember.</p>
+        </div>
+        <div class="step reveal">
+          <div class="no">STEP 02</div>
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16"/><path d="M8 14h.01M12 14h4M8 17h8"/></svg></div>
+          <h3>We scan every receipt</h3>
+          <p>Our volunteers empty the box on a set schedule and scan the receipts through the Box Tops app, which finds qualifying products automatically.</p>
+        </div>
+        <div class="step reveal">
+          <div class="no">STEP 03</div>
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6"/><path d="M2 10 12 3l10 7"/><path d="M9 21v-6h6v6"/></svg></div>
+          <h3>Local schools cash in</h3>
+          <p>Earnings are credited to schools in the community. Box Tops mails schools a check twice a year — real money for books, supplies, and programs.</p>
+          <a class="step-link" href="#boxtops">Where the money comes from →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOX TOPS BAND -->
+  <section id="boxtops" class="band">
+    <div class="wrap band-grid">
+      <div class="reveal">
+        <span class="eyebrow">The engine behind the box</span>
+        <h2>Box Tops for Education, doing the heavy lifting.</h2>
+        <div class="body">
+          <p>Box Tops for Education is a school fundraising program General Mills started back in 1996. For years it meant clipping little cardboard squares off cereal boxes; since 2019 it's fully digital — you just scan a store receipt and the app credits qualifying products to a school.</p>
+          <p>Each qualifying product is worth ten cents. That sounds small, but Box Tops appears on hundreds of everyday items across the store — cereal and snacks, plus non-food staples like sandwich bags, paper towels, and tissues — so a single grocery run can quietly earn a dollar or more.</p>
+          <p>Scan for Schools simply catches the receipts that would otherwise hit the trash and turns them into funding for schools nearby.</p>
+        </div>
+        <p class="disclaim">Scan for Schools is an independent community initiative. It is not affiliated with, endorsed by, or sponsored by General Mills or Box Tops for Education.</p>
+      </div>
+      <div class="reveal">
+        <div class="stats">
+          <div class="stat"><div class="n">1996</div><div class="l">Program founded</div></div>
+          <div class="stat"><div class="n">10¢</div><div class="l">Earned per item</div></div>
+          <div class="stat"><div class="n">$958M+</div><div class="l">Raised for U.S. schools</div></div>
+          <div class="stat"><div class="n">2× / yr</div><div class="l">Checks mailed to schools</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOR GROCERS -->
+  <section id="grocers">
+    <div class="wrap">
+      <div class="grocer-top reveal">
+        <div class="sec-head" style="max-width:none;">
+          <span class="eyebrow">For grocers &amp; supermarkets</span>
+          <h2>Host a box. It costs you nothing and means everything.</h2>
+        </div>
+        <p style="color:var(--ink-soft);font-size:1.1rem;">One small box by your exit turns everyday shopping into support for the schools your customers' kids attend. We handle the rest — you just give it a home.</p>
+      </div>
+
+      <div class="cards">
+        <div class="card reveal">
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></div>
+          <h3>Zero cost, zero staff work</h3>
+          <p>We provide the box and signage and send volunteers to collect and scan. Your team never has to lift a finger.</p>
+        </div>
+        <div class="card reveal">
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 8.5 12 3 4 8.5"/><path d="M4 8.5V20h16V8.5"/><path d="M9 20v-6h6v6"/></svg></div>
+          <h3>Visible community goodwill</h3>
+          <p>Shoppers see your store standing behind their local schools — the kind of goodwill money can't buy.</p>
+        </div>
+        <div class="card reveal">
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 3 5-6"/></svg></div>
+          <h3>A reason to come back</h3>
+          <p>Customers hold onto receipts and return to drop them off — a gentle, feel-good nudge toward your door.</p>
+        </div>
+        <div class="card reveal">
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 9h8M8 13h5"/></svg></div>
+          <h3>We report the impact</h3>
+          <p>Every quarter we tell you exactly how much your store's box has raised, so you can share the win.</p>
+        </div>
+      </div>
+
+      <div class="split reveal">
+        <div class="panel">
+          <h4>What we provide</h4>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg><span>A clean, branded collection box built for a countertop or floor stand.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg><span>Friendly register and exit signage that explains it to shoppers in a glance.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg><span>A regular pickup schedule — we empty, scan, and recycle the receipts.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg><span>Quarterly earnings reports you can post or share with your community.</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h4>All we ask of you</h4>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg><span>A small spot near the exit or the customer service desk.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg><span>A quick heads-up to your staff so they can point shoppers to it.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg><span>Permission for a volunteer to swing by on the pickup schedule.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg><span>That's it. No paperwork, no fees, no ongoing effort.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="padding-top:0;">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Good questions</span>
+        <h2>The short answers.</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>Do shoppers need to download anything? <span class="plus" aria-hidden="true"></span></summary>
+          <p>No. That's the whole point. Shoppers just drop their paper receipt in the box on their way out. Our volunteers handle every scan through the Box Tops app, so there's nothing for customers to install or sign up for.</p>
+        </details>
+        <details>
+          <summary>Does hosting a box cost the store anything? <span class="plus" aria-hidden="true"></span></summary>
+          <p>Nothing at all. We supply the box, the signage, and the volunteers who collect and scan. All the store provides is a little floor or counter space near the exit.</p>
+        </details>
+        <details>
+          <summary>Which schools get the money? <span class="plus" aria-hidden="true"></span></summary>
+          <p>Local ones. Earnings are directed to schools in the surrounding community, and we're happy to work with a store to feature a specific school or district its customers care about.</p>
+        </details>
+        <details>
+          <summary>What about privacy — you're handling receipts? <span class="plus" aria-hidden="true"></span></summary>
+          <p>We only look for qualifying products to scan, never payment details or personal information. Receipts are recycled promptly after scanning and are never stored or shared.</p>
+        </details>
+        <details>
+          <summary>How much can a single box realistically raise? <span class="plus" aria-hidden="true"></span></summary>
+          <p>It adds up quietly. At ten cents per qualifying item, a busy store's box captures value from receipts that would otherwise be thrown away. We report your box's totals every quarter so the impact is never a mystery.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="wrap contact-grid">
+      <div class="reveal">
+        <span class="eyebrow">Get a box in your store</span>
+        <h2>Let's put a box by your door.</h2>
+        <p class="lead">Tell us a little about your store and we'll be in touch to drop off a box, hang the signage, and set a simple pickup schedule. Community members and schools who want to help are welcome too.</p>
+        <div class="aside">
+          Prefer email? Reach us at<br>
+          <a href="mailto:hello@scanforschools.com">hello@scanforschools.com</a>
+        </div>
+      </div>
+      <form id="contactForm" novalidate>
+        <div class="field row">
+          <div class="field-inner">
+            <label for="store">Store name</label>
+            <input id="store" name="store" type="text" placeholder="Neighborhood Grocer" required>
+          </div>
+          <div class="field-inner">
+            <label for="name">Your name</label>
+            <input id="name" name="name" type="text" placeholder="Jamie Rivera" required>
+          </div>
+        </div>
+        <div class="field row" style="margin-top:1.05rem;">
+          <div class="field-inner">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@store.com" required>
+          </div>
+          <div class="field-inner">
+            <label for="city">Store location</label>
+            <input id="city" name="city" type="text" placeholder="City, State">
+          </div>
+        </div>
+        <div class="field" style="margin-top:1.05rem;">
+          <label for="message">Anything we should know? <span style="text-transform:none;letter-spacing:0;">(optional)</span></label>
+          <textarea id="message" name="message" placeholder="A school we'd love to support, best time for pickup, questions…"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Send &amp; get a box <span class="arw">→</span></button>
+        <p class="form-note">We'll only use your details to set up your collection box.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <a class="brand" href="#top" aria-label="Scan for Schools home">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 9h8M8 13h5"/></svg>
+        </span>
+        Scan&nbsp;for&nbsp;Schools
+      </a>
+      <nav class="foot-links" aria-label="Footer">
+        <a href="#how">How it works</a>
+        <a href="#boxtops">Box Tops</a>
+        <a href="#grocers">For grocers</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Host a box</a>
+      </nav>
+    </div>
+    <p class="foot-legal">
+      Scan for Schools is an independent, community-run initiative that collects store receipts and scans them to earn funds for local schools. Scan for Schools is not affiliated with, endorsed by, or sponsored by General Mills. “Box Tops for Education” is a trademark of General Mills; program details and earnings are set solely by General Mills and may change. © <span id="yr"></span> Scan for Schools · scanforschools.com
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  var header = document.getElementById('site-header');
+  var menuBtn = document.getElementById('menuBtn');
+  menuBtn.addEventListener('click', function(){
+    var open = header.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    a.addEventListener('click', function(){ header.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); });
+  });
+
+  // Year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Highlighter swipe on the hero receipt
+  var hl = document.getElementById('hl');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { hl.classList.add('lit'); }
+  else { setTimeout(function(){ hl.classList.add('lit'); }, 650); }
+
+  // Scroll reveal
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.14 });
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // Contact form -> opens the visitor's email client with details prefilled.
+  // Swap this out for a form service (Formspree, Netlify Forms, etc.) when ready.
+  document.getElementById('contactForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var f = ev.target;
+    if (!f.checkValidity()){ f.reportValidity(); return; }
+    var body =
+      'Store: ' + f.store.value + '\n' +
+      'Contact: ' + f.name.value + '\n' +
+      'Email: ' + f.email.value + '\n' +
+      'Location: ' + f.city.value + '\n\n' +
+      (f.message.value || '');
+    var url = 'mailto:hello@scanforschools.com'
+      + '?subject=' + encodeURIComponent('Host a box: ' + f.store.value)
+      + '&body=' + encodeURIComponent(body);
+    window.location.href = url;
+  });
+</script>
+</body>
+</html>
