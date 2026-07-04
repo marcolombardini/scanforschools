@@ -193,6 +193,32 @@
   .panel li{display:flex;gap:.7rem;align-items:flex-start;font-size:.98rem;color:var(--ink);}
   .panel li svg{width:18px;height:18px;flex:none;margin-top:.2rem;color:var(--green);}
 
+  /* ---------- impact ---------- */
+  .impact-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:clamp(2rem,5vw,4rem);align-items:center;}
+  .impact-number{
+    font-family:"Bricolage Grotesque";font-weight:800;line-height:.92;letter-spacing:-.02em;
+    font-size:clamp(3.2rem,11vw,6.5rem);color:var(--green);display:inline-block;margin-top:1rem;
+    background-image:linear-gradient(var(--marker),var(--marker));
+    background-repeat:no-repeat;background-position:0 92%;background-size:0% .15em;
+    transition:background-size .85s cubic-bezier(.2,.75,.2,1);
+  }
+  .impact-number.lit{background-size:100% .15em;}
+  .impact-sub{margin-top:1.1rem;font-size:1.15rem;color:var(--ink-soft);max-width:30ch;}
+  .impact-side{display:grid;gap:1.1rem;}
+  .impact-stat{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.4rem;}
+  .impact-stat .n{font-family:"Bricolage Grotesque";font-weight:800;font-size:2.1rem;color:var(--ink);line-height:1;}
+  .impact-stat .l{margin-top:.4rem;font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);}
+
+  /* ---------- stores ---------- */
+  .stores-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin-top:2.6rem;}
+  .store-card{display:flex;align-items:center;gap:.9rem;background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:1.1rem 1.2rem;}
+  .store-ic{width:40px;height:40px;flex:none;border-radius:10px;background:var(--hero-green);color:var(--marker);display:grid;place-items:center;}
+  .store-ic svg{width:20px;height:20px;}
+  .store-name{font-family:"Bricolage Grotesque";font-weight:700;font-size:1.05rem;line-height:1.15;}
+  .store-area{font-family:"DM Mono",monospace;font-size:.74rem;color:var(--ink-soft);margin-top:.28rem;letter-spacing:.02em;}
+  .stores-empty{grid-column:1/-1;text-align:center;padding:2.6rem 1rem;border:1.5px dashed var(--line);border-radius:var(--r);color:var(--ink-soft);font-size:1.05rem;}
+  .stores-empty a{color:var(--green);font-family:"DM Mono",monospace;font-size:.85rem;white-space:nowrap;text-decoration:none;border-bottom:1.5px solid var(--marker);}
+
   /* ---------- faq ---------- */
   .faq{max-width:820px;margin-top:2.5rem;}
   details{border-top:1px solid var(--line);}
@@ -253,6 +279,8 @@
     .steps{grid-template-columns:1fr;}
     .cards{grid-template-columns:1fr;}
     .split{grid-template-columns:1fr;}
+    .impact-grid{grid-template-columns:1fr;}
+    .impact-side{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
     .nav-links{display:none;}
     .nav-cta .btn-ghost{display:none;}
     .menu-btn{display:inline-flex;}
@@ -285,6 +313,7 @@
       <a href="#how">How it works</a>
       <a href="#boxtops">Box Tops</a>
       <a href="#grocers">For grocers</a>
+      <a href="#stores">Stores</a>
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-cta">
@@ -370,6 +399,22 @@
     </div>
   </section>
 
+  <!-- IMPACT -->
+  <section id="impact">
+    <div class="wrap impact-grid">
+      <div class="impact-headline reveal">
+        <span class="eyebrow">Our impact so far</span>
+        <div class="impact-number" data-raised>$0</div>
+        <p class="impact-sub">raised for local schools — a few dimes at a time, from receipts that would've hit the trash.</p>
+      </div>
+      <div class="impact-side reveal">
+        <div class="impact-stat"><div class="n" data-receipts>0</div><div class="l">Receipts scanned</div></div>
+        <div class="impact-stat"><div class="n" data-storecount>0</div><div class="l">Stores hosting a box</div></div>
+        <div class="impact-stat"><div class="n">100%</div><div class="l">Goes to local schools</div></div>
+      </div>
+    </div>
+  </section>
+
   <!-- BOX TOPS BAND -->
   <section id="boxtops" class="band">
     <div class="wrap band-grid">
@@ -451,6 +496,18 @@
     </div>
   </section>
 
+  <!-- STORES -->
+  <section id="stores">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Where to find a box</span>
+        <h2>Stores hosting a Scan for Schools box.</h2>
+        <p>Drop your receipt at any of these neighborhood spots. Don't see yours? Ask them to join — or tell us and we'll reach out.</p>
+      </div>
+      <div class="stores-grid reveal" id="storesGrid"></div>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <section id="faq" style="padding-top:0;">
     <div class="wrap">
@@ -478,6 +535,10 @@
         <details>
           <summary>How much can a single box realistically raise? <span class="plus" aria-hidden="true"></span></summary>
           <p>It adds up quietly. At ten cents per qualifying item, a busy store's box captures value from receipts that would otherwise be thrown away. We report your box's totals every quarter so the impact is never a mystery.</p>
+        </details>
+        <details>
+          <summary>About the Scan for Schools project <span class="plus" aria-hidden="true"></span></summary>
+          <p>Scan for Schools was started by Amelia/Emilio Lombardini, a junior and honors student at Locust Valley High School. Outside of class, Amelia/Emilio volunteers at the local animal shelter, plays on the tennis team, and takes part in a range of after-school activities — all driven by a love of giving back to the local community.</p>
         </details>
       </div>
     </div>
@@ -540,6 +601,7 @@
         <a href="#how">How it works</a>
         <a href="#boxtops">Box Tops</a>
         <a href="#grocers">For grocers</a>
+        <a href="#stores">Stores</a>
         <a href="#faq">FAQ</a>
         <a href="#contact">Host a box</a>
       </nav>
@@ -550,6 +612,7 @@
   </div>
 </footer>
 
+<script src="data.js"></script>
 <script>
   // Mobile menu
   var header = document.getElementById('site-header');
@@ -598,6 +661,70 @@
       + '&body=' + encodeURIComponent(body);
     window.location.href = url;
   });
+
+  // ----- Site data: raised total + participating stores (from data.js) -----
+  (function(){
+    var data = window.SFS_DATA || { raisedUSD: 0, stores: [] };
+    var stores = data.stores || [];
+    var hasCents = (Number(data.raisedUSD) % 1) !== 0;
+
+    function money(v){
+      return Number(v).toLocaleString('en-US', {
+        style:'currency', currency:'USD',
+        minimumFractionDigits: hasCents ? 2 : 0,
+        maximumFractionDigits: hasCents ? 2 : 0
+      });
+    }
+    function esc(s){
+      return String(s).replace(/[&<>"']/g, function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    }
+    function countUp(el, target, render){
+      target = Number(target) || 0;
+      if (reduce || !('requestAnimationFrame' in window)){ el.textContent = render(target); return; }
+      var start = null, dur = 1200;
+      requestAnimationFrame(function tick(ts){
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = render(target * eased);
+        if (p < 1) requestAnimationFrame(tick); else el.textContent = render(target);
+      });
+    }
+
+    var raisedEl = document.querySelector('[data-raised]');
+    var countEl  = document.querySelector('[data-storecount]');
+    var receiptsEl = document.querySelector('[data-receipts]');
+    function animateImpact(){
+      if (raisedEl){ raisedEl.classList.add('lit'); countUp(raisedEl, data.raisedUSD, money); }
+      if (countEl){ countUp(countEl, stores.length, function(v){ return Math.round(v).toString(); }); }
+      if (receiptsEl){ countUp(receiptsEl, data.receiptsScanned, function(v){ return Math.round(v).toString(); }); }
+    }
+    var impact = document.getElementById('impact');
+    if (impact && 'IntersectionObserver' in window && !reduce){
+      var iio = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if (e.isIntersecting){ animateImpact(); iio.disconnect(); } });
+      }, { threshold: 0.4 });
+      iio.observe(impact);
+    } else { animateImpact(); }
+
+    var grid = document.getElementById('storesGrid');
+    if (grid){
+      if (!stores.length){
+        grid.innerHTML = '<div class="stores-empty">No boxes just yet — be the first store in town. <a href="#contact">Host a box →</a></div>';
+      } else {
+        grid.innerHTML = stores.map(function(s){
+          var since = s.since ? (' · since ' + esc(String(s.since))) : '';
+          return '<div class="store-card">'
+            + '<div class="store-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M2 3h3l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L23 6H6"/></svg></div>'
+            + '<div><div class="store-name">' + esc(s.name || '') + '</div>'
+            + '<div class="store-area">' + esc(s.area || '') + since + '</div></div>'
+            + '</div>';
+        }).join('');
+      }
+    }
+  })();
 </script>
 </body>
 </html>
