@@ -194,20 +194,22 @@
   .panel li svg{width:18px;height:18px;flex:none;margin-top:.2rem;color:var(--green);}
 
   /* ---------- impact ---------- */
-  .impact-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:clamp(2rem,5vw,4rem);align-items:center;}
-  .impact-number{
-    font-family:"Bricolage Grotesque";font-weight:800;line-height:.92;letter-spacing:-.02em;
-    font-size:clamp(3.2rem,11vw,6.5rem);color:var(--green);display:inline-block;margin-top:1rem;
-    background-image:linear-gradient(var(--marker),var(--marker));
-    background-repeat:no-repeat;background-position:0 92%;background-size:0% .15em;
-    transition:background-size .85s cubic-bezier(.2,.75,.2,1);
-  }
-  .impact-number.lit{background-size:100% .15em;}
-  .impact-sub{margin-top:1.1rem;font-size:1.15rem;color:var(--ink-soft);max-width:30ch;}
-  .impact-side{display:grid;gap:1.1rem;}
-  .impact-stat{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.4rem;}
-  .impact-stat .n{font-family:"Bricolage Grotesque";font-weight:800;font-size:2.1rem;color:var(--ink);line-height:1;}
-  .impact-stat .l{margin-top:.4rem;font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);}
+  .impact-card{position:relative;overflow:hidden;background:linear-gradient(150deg,#FFDD57,#F7BE2A);border-radius:24px;padding:clamp(2rem,5vw,3.5rem);box-shadow:0 26px 55px -30px rgba(200,150,25,.7);}
+  .impact-card::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;background-image:repeating-linear-gradient(90deg,#0F3D2A 0 1px,transparent 1px 72px);}
+  .impact-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2rem,5vw,3.5rem);align-items:center;}
+  .impact-card .eyebrow{color:#0F3D2A;}
+  .impact-number{font-family:"Bricolage Grotesque";font-weight:800;line-height:.9;letter-spacing:-.02em;font-size:clamp(3.6rem,12vw,7rem);color:#0F3D2A;display:inline-block;margin-top:1rem;}
+  .impact-sub{margin-top:1.15rem;font-size:1.15rem;color:rgba(15,61,42,.82);max-width:34ch;}
+  .impact-side{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .impact-stat{background:rgba(255,255,255,.5);border:1px solid rgba(15,61,42,.14);border-radius:14px;padding:1.2rem 1.35rem;}
+  .impact-stat .n{font-family:"Bricolage Grotesque";font-weight:800;font-size:2.2rem;color:#0F3D2A;line-height:1;}
+  .impact-stat .l{margin-top:.4rem;font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:rgba(15,61,42,.66);}
+  .impact-goal{position:relative;z-index:1;margin-top:clamp(1.7rem,4vw,2.5rem);}
+  .goal-labels{display:flex;justify-content:space-between;align-items:baseline;font-family:"DM Mono",monospace;font-size:.82rem;color:rgba(15,61,42,.82);margin-bottom:.6rem;letter-spacing:.02em;}
+  .goal-track{height:14px;border-radius:999px;background:rgba(15,61,42,.15);overflow:hidden;}
+  .goal-fill{height:100%;width:0;border-radius:999px;background:#0F3D2A;transition:width 1.1s cubic-bezier(.2,.75,.2,1);}
+  .goal-period{margin-top:.75rem;display:flex;align-items:center;gap:.45rem;font-family:"DM Mono",monospace;font-size:.76rem;color:rgba(15,61,42,.72);letter-spacing:.02em;}
+  .goal-period svg{width:14px;height:14px;flex:none;}
 
   /* ---------- stores ---------- */
   .stores-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin-top:2.6rem;}
@@ -263,6 +265,12 @@
   textarea{resize:vertical;min-height:96px;}
   form .btn-primary{width:100%;justify-content:center;margin-top:.4rem;border:none;}
   .form-note{margin-top:.85rem;font-size:.78rem;color:var(--ink-soft);text-align:center;}
+  .form-success{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:2.4rem 1.8rem;text-align:center;}
+  .form-success .fs-check{width:54px;height:54px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;margin:0 auto 1.1rem;}
+  .form-success .fs-check svg{width:27px;height:27px;}
+  .form-success h3{font-size:1.4rem;}
+  .form-success p{margin-top:.55rem;color:var(--ink-soft);}
+  .btn:disabled{opacity:.6;cursor:default;transform:none;}
 
   /* ---------- footer ---------- */
   footer{background:var(--green-deep);color:rgba(255,255,255,.7);padding-block:3rem;}
@@ -318,7 +326,7 @@
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#how">How it works</a>
-      <a href="#boxtops">Box Tops</a>
+      <a href="#impact">Impact</a>
       <a href="#grocers">For grocers</a>
       <a href="#stores">Stores</a>
       <a href="#schools">Schools</a>
@@ -361,7 +369,7 @@
             <div class="sub">scan for schools · drop box</div>
           </div>
           <div class="r-line"><span>CHEERIOS</span><span class="q">✓ earns</span></div>
-          <div class="r-line"><span>NATURES VALLEY</span><span class="q">✓ earns</span></div>
+          <div class="r-line"><span>NATURE VALLEY</span><span class="q">✓ earns</span></div>
           <div class="r-line"><span>MOTTS</span><span class="q">✓ earns</span></div>
           <div class="r-line"><span>PROGRESSO</span><span class="q">✓ earns</span></div>
           <div class="r-rule"></div>
@@ -409,16 +417,26 @@
 
   <!-- IMPACT -->
   <section id="impact">
-    <div class="wrap impact-grid">
-      <div class="impact-headline reveal">
-        <span class="eyebrow">Our impact so far</span>
-        <div class="impact-number" data-raised>$0</div>
-        <p class="impact-sub">raised for local schools — a few dimes at a time, from receipts that would've hit the trash.</p>
-      </div>
-      <div class="impact-side reveal">
-        <div class="impact-stat"><div class="n" data-receipts>0</div><div class="l">Receipts scanned</div></div>
-        <div class="impact-stat"><div class="n" data-storecount>0</div><div class="l">Stores hosting a box</div></div>
-        <div class="impact-stat"><div class="n">100%</div><div class="l">Goes to local schools</div></div>
+    <div class="wrap">
+      <div class="impact-card reveal">
+        <div class="impact-grid">
+          <div class="impact-headline">
+            <span class="eyebrow">Our impact so far</span>
+            <div class="impact-number" data-raised>$0</div>
+            <p class="impact-sub">raised for local schools — a few dimes at a time, from receipts that would've hit the trash.</p>
+          </div>
+          <div class="impact-side">
+            <div class="impact-stat"><div class="n" data-receipts>0</div><div class="l">Receipts scanned</div></div>
+            <div class="impact-stat"><div class="n" data-schoolcount>0</div><div class="l">Schools supported</div></div>
+            <div class="impact-stat"><div class="n" data-storecount>0</div><div class="l">Stores hosting a box</div></div>
+            <div class="impact-stat"><div class="n">100%</div><div class="l">Goes to local schools</div></div>
+          </div>
+        </div>
+        <div class="impact-goal">
+          <div class="goal-labels"><span data-goalnow>$0 raised</span><span data-goaltarget>Goal $0</span></div>
+          <div class="goal-track"><div class="goal-fill" data-goalfill></div></div>
+          <div class="goal-period"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span data-goalperiod></span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -576,7 +594,11 @@
           <a href="mailto:hello@scanforschools.com">hello@scanforschools.com</a>
         </div>
       </div>
-      <form id="contactForm" novalidate>
+      <form id="contactForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
+        <input type="hidden" name="access_key" value="ba3ce7af-9b6f-40ec-9e5b-1baa84967cdc">
+        <input type="hidden" name="subject" value="New Scan for Schools inquiry">
+        <input type="hidden" name="from_name" value="Scan for Schools website">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;width:0;opacity:0;">
         <div class="field row">
           <div class="field-inner">
             <label for="store">Store name</label>
@@ -604,6 +626,13 @@
         <button class="btn btn-primary" type="submit">Send &amp; get a box <span class="arw">→</span></button>
         <p class="form-note">We'll only use your details to set up your collection box.</p>
       </form>
+      <div id="formSuccess" class="form-success" hidden>
+        <div class="fs-check" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>
+        </div>
+        <h3>Thanks — message received!</h3>
+        <p>We'll be in touch soon about getting a box set up.</p>
+      </div>
     </div>
   </section>
 </main>
@@ -620,6 +649,7 @@
       <nav class="foot-links" aria-label="Footer">
         <a href="#how">How it works</a>
         <a href="#boxtops">Box Tops</a>
+        <a href="#impact">Impact</a>
         <a href="#grocers">For grocers</a>
         <a href="#stores">Stores</a>
         <a href="#schools">Schools</a>
@@ -665,35 +695,54 @@
     document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
   }
 
-  // Contact form -> opens the visitor's email client with details prefilled.
-  // Swap this out for a form service (Formspree, Netlify Forms, etc.) when ready.
-  document.getElementById('contactForm').addEventListener('submit', function(ev){
-    ev.preventDefault();
-    var f = ev.target;
-    if (!f.checkValidity()){ f.reportValidity(); return; }
-    var body =
-      'Store: ' + f.store.value + '\n' +
-      'Contact: ' + f.name.value + '\n' +
-      'Email: ' + f.email.value + '\n' +
-      'Location: ' + f.city.value + '\n\n' +
-      (f.message.value || '');
-    var url = 'mailto:hello@scanforschools.com'
-      + '?subject=' + encodeURIComponent('Host a box: ' + f.store.value)
-      + '&body=' + encodeURIComponent(body);
-    window.location.href = url;
-  });
+  // Contact form -> submits to Web3Forms via AJAX, no page reload.
+  (function(){
+    var form = document.getElementById('contactForm');
+    if (!form) return;
+    var success = document.getElementById('formSuccess');
+    var btn = form.querySelector('button[type="submit"]');
+    var btnHTML = btn ? btn.innerHTML : '';
+    var keyInput = form.querySelector('input[name="access_key"]');
+    function fail(msg){
+      alert(msg || 'Something went wrong. Please try again, or email hello@scanforschools.com.');
+      if (btn){ btn.disabled = false; btn.innerHTML = btnHTML; }
+    }
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if (!form.checkValidity()){ form.reportValidity(); return; }
+      if (!keyInput || !keyInput.value || keyInput.value.indexOf('YOUR_ACCESS_KEY') !== -1){
+        alert('The form isn\'t connected yet. Paste your Web3Forms access key into the "access_key" field, then it will send for real.');
+        return;
+      }
+      if (btn){ btn.disabled = true; btn.innerHTML = 'Sending…'; }
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).then(function(res){
+        return res.json().then(function(data){ return { ok: res.ok, data: data }; });
+      }).then(function(r){
+        if (r.ok && r.data && r.data.success){
+          form.style.display = 'none';
+          if (success) success.hidden = false;
+        } else {
+          fail(r.data && r.data.message);
+        }
+      }).catch(function(){ fail('Network error. Please try again, or email hello@scanforschools.com.'); });
+    });
+  })();
 
   // ----- Site data: raised total + participating stores (from data.js) -----
   (function(){
     var data = window.SFS_DATA || { raisedUSD: 0, stores: [] };
     var stores = data.stores || [];
-    var hasCents = (Number(data.raisedUSD) % 1) !== 0;
-
     function money(v){
-      return Number(v).toLocaleString('en-US', {
+      v = Number(v) || 0;
+      var cents = (Math.round(v * 100) % 100) !== 0;
+      return v.toLocaleString('en-US', {
         style:'currency', currency:'USD',
-        minimumFractionDigits: hasCents ? 2 : 0,
-        maximumFractionDigits: hasCents ? 2 : 0
+        minimumFractionDigits: cents ? 2 : 0,
+        maximumFractionDigits: 2
       });
     }
     function esc(s){
@@ -717,10 +766,25 @@
     var raisedEl = document.querySelector('[data-raised]');
     var countEl  = document.querySelector('[data-storecount]');
     var receiptsEl = document.querySelector('[data-receipts]');
+    var schoolsEl = document.querySelector('[data-schoolcount]');
+    var goalNowEl = document.querySelector('[data-goalnow]');
+    var goalTargetEl = document.querySelector('[data-goaltarget]');
+    var goalFillEl = document.querySelector('[data-goalfill]');
+    var goalPeriodEl = document.querySelector('[data-goalperiod]');
+    if (goalPeriodEl && data.goalPeriod){ goalPeriodEl.textContent = data.goalPeriod; }
+    var goal = Number(data.goalUSD) || 0;
     function animateImpact(){
       if (raisedEl){ raisedEl.classList.add('lit'); countUp(raisedEl, data.raisedUSD, money); }
       if (countEl){ countUp(countEl, stores.length, function(v){ return Math.round(v).toString(); }); }
       if (receiptsEl){ countUp(receiptsEl, data.receiptsScanned, function(v){ return Math.round(v).toString(); }); }
+      if (schoolsEl){ countUp(schoolsEl, (data.schools || []).length, function(v){ return Math.round(v).toString(); }); }
+      if (goalNowEl){ goalNowEl.textContent = money(data.raisedUSD || 0) + ' raised'; }
+      if (goalTargetEl){ goalTargetEl.textContent = 'Goal ' + money(goal); }
+      if (goalFillEl && goal > 0){
+        var pct = Math.min(100, (Number(data.raisedUSD || 0) / goal) * 100);
+        if (pct > 0) pct = Math.max(pct, 1.5);
+        goalFillEl.style.width = pct + '%';
+      }
     }
     var impact = document.getElementById('impact');
     if (impact && 'IntersectionObserver' in window && !reduce){
