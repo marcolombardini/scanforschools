@@ -113,3 +113,4 @@ Then set the custom domain under **Settings → Pages**, and enable **Enforce HT
 ---
 
 ## About
+Scan for Schools was started by a local high school student who wanted to give back to the community — turning everyday grocery receipts into real funding for neighborhood schools, one box at a time.
