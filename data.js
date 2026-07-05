@@ -50,4 +50,18 @@ window.SFS_DATA = {
     //   { name: "Store name", area: "Town, State", since: "2026" },
   ],
 
+
+  /* ----------------------------------------------------------
+     SCHOOLS YOU SUPPORT (shown in the "Schools we support" section)
+     Just the school name in quotes, one per line.
+     TO ADD A SCHOOL: copy a line, paste it, edit the name.
+     Keep the comma at the end of each line.
+     ---------------------------------------------------------- */
+  schools: [
+    "Locust Valley Elementary",
+    "Bayville Primary",
+    "Bayville Intermediate School",
+    "Deasy Elementary School",
+  ],
+
 };
