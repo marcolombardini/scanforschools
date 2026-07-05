@@ -12,7 +12,7 @@ Currently supporting Locust Valley Elementary, Bayville Primary, Bayville Interm
 
 This is a plain **static website** — no framework, no build step, no server. It's hosted free on **GitHub Pages** straight from the `main` branch.
 
-The site is a single HTML file that reads all of its live content (money raised, receipts scanned, participating stores, and supported schools) from a separate **`data.js`** file. That means you almost never touch the HTML — all routine updates happen in `data.js`.
+The site is a single HTML file that reads all of its live content (money raised, receipts scanned, the fundraising goal, participating stores, and supported schools) from a separate **`data.js`** file. That means you almost never touch the HTML — all routine updates happen in `data.js`.
 
 ---
 
@@ -41,6 +41,16 @@ Change the numbers:
 raisedUSD: 4.30,        // total dollars raised
 receiptsScanned: 16,    // total receipts scanned
 ```
+
+### Update the fundraising goal
+The impact section shows a progress bar toward a goal for the current program year. Both live in `data.js`:
+
+```js
+goalUSD: 5000,                        // the target amount
+goalPeriod: "July 2026 – June 2027",  // the label under the progress bar
+```
+
+The bar fills automatically based on `raisedUSD` ÷ `goalUSD`.
 
 ### Add or remove a store
 Each store is one line in the `stores` list. To **add** one, copy an existing line and edit the details (keep the comma at the end). To **remove** one, delete its whole line.
@@ -80,11 +90,13 @@ By default GitHub Pages runs everything through Jekyll, which can break a plain 
 
 ---
 
-## Contact form (Formspree)
+## Contact form (Web3Forms)
 
-The contact form submits through [Formspree](https://formspree.io) — a free service that emails you each submission, since a static site has no server of its own.
+The contact form submits through [Web3Forms](https://web3forms.com) — a service that emails each submission straight to your inbox, since a static site has no server of its own. It's **already connected** using your access key, with an inline "thanks" success message and a hidden honeypot field to catch spam bots. There's no account to manage and no monthly submission cap.
 
-**One-time setup:** create a free Formspree account, make a form to get its ID, then in `index.html` replace the placeholder `YOUR_FORM_ID` with your real ID and commit. Until that's done, the form won't deliver messages.
+Submissions also fall back to the `hello@scanforschools.com` link shown in the contact section — make sure that address exists (or swap it for your real one).
+
+**If you ever need to change where messages go:** get a new access key from web3forms.com, then in `index.html` update the value of the hidden `access_key` field on the contact form and commit.
 
 ---
 
@@ -97,7 +109,7 @@ To point the domain at this site, add these DNS records at your domain registrar
   - `185.199.109.153`
   - `185.199.110.153`
   - `185.199.111.153`
-- **One CNAME** for `www` → `<your-github-username>.github.io`
+- **One CNAME** for `www` → `marcolombardini.github.io`
 
 Then set the custom domain under **Settings → Pages**, and enable **Enforce HTTPS** once the certificate provisions.
 
@@ -113,4 +125,5 @@ Then set the custom domain under **Settings → Pages**, and enable **Enforce HT
 ---
 
 ## About
+
 Scan for Schools was started by a local high school student who wanted to give back to the community — turning everyday grocery receipts into real funding for neighborhood schools, one box at a time.
