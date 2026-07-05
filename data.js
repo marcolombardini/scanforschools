@@ -62,7 +62,6 @@ window.SFS_DATA = {
     "Bayville Primary",
     "Bayville Intermediate School",
     "Deasy Elementary School",
-     "test",
   ],
 
 };
