@@ -55,7 +55,7 @@ window.SFS_DATA = {
      SCHOOLS YOU SUPPORT (shown in the "Schools we support" section)
      Just the school name in quotes, one per line.
      TO ADD A SCHOOL: copy a line, paste it, edit the name.
-     Keep the comma at the end of each line.
+     Keep the comma at the end of each line. 
      ---------------------------------------------------------- */
   schools: [
     "Locust Valley Elementary",
