@@ -22,6 +22,19 @@ window.SFS_DATA = {
 
 
   /* ----------------------------------------------------------
+     FUNDRAISING GOAL (drives the progress bar in the Impact card)
+     Set your target dollar amount — no "$" sign, no commas.
+     ---------------------------------------------------------- */
+  goalUSD: 5000,
+
+
+  /* ----------------------------------------------------------
+     CAMPAIGN PERIOD (shown under the goal bar). Free text.
+     ---------------------------------------------------------- */
+  goalPeriod: "July 2026 – June 2027",
+
+
+  /* ----------------------------------------------------------
      RECEIPTS SCANNED SO FAR (shown as a box in the Impact section)
      Just type the whole number of receipts scanned — no commas.
      ---------------------------------------------------------- */
@@ -55,7 +68,7 @@ window.SFS_DATA = {
      SCHOOLS YOU SUPPORT (shown in the "Schools we support" section)
      Just the school name in quotes, one per line.
      TO ADD A SCHOOL: copy a line, paste it, edit the name.
-     Keep the comma at the end of each line. 
+     Keep the comma at the end of each line.
      ---------------------------------------------------------- */
   schools: [
     "Locust Valley Elementary",
