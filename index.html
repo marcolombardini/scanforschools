@@ -219,6 +219,13 @@
   .stores-empty{grid-column:1/-1;text-align:center;padding:2.6rem 1rem;border:1.5px dashed var(--line);border-radius:var(--r);color:var(--ink-soft);font-size:1.05rem;}
   .stores-empty a{color:var(--green);font-family:"DM Mono",monospace;font-size:.85rem;white-space:nowrap;text-decoration:none;border-bottom:1.5px solid var(--marker);}
 
+  /* ---------- schools ---------- */
+  .schools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem;margin-top:2.6rem;}
+  .school-card{display:flex;align-items:center;gap:.9rem;background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:1.1rem 1.2rem;}
+  .school-ic{width:40px;height:40px;flex:none;border-radius:10px;background:var(--marker);color:var(--green-deep);display:grid;place-items:center;}
+  .school-ic svg{width:22px;height:22px;}
+  .school-name{font-family:"Bricolage Grotesque";font-weight:700;font-size:1.02rem;line-height:1.2;}
+
   /* ---------- faq ---------- */
   .faq{max-width:820px;margin-top:2.5rem;}
   details{border-top:1px solid var(--line);}
@@ -314,6 +321,7 @@
       <a href="#boxtops">Box Tops</a>
       <a href="#grocers">For grocers</a>
       <a href="#stores">Stores</a>
+      <a href="#schools">Schools</a>
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-cta">
@@ -508,6 +516,18 @@
     </div>
   </section>
 
+  <!-- SCHOOLS -->
+  <section id="schools">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Who it's for</span>
+        <h2>The schools your receipts support.</h2>
+        <p>Every dime we collect goes to these neighborhood schools — with more joining all the time.</p>
+      </div>
+      <div class="schools-grid reveal" id="schoolsGrid"></div>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <section id="faq" style="padding-top:0;">
     <div class="wrap">
@@ -602,6 +622,7 @@
         <a href="#boxtops">Box Tops</a>
         <a href="#grocers">For grocers</a>
         <a href="#stores">Stores</a>
+        <a href="#schools">Schools</a>
         <a href="#faq">FAQ</a>
         <a href="#contact">Host a box</a>
       </nav>
@@ -720,6 +741,22 @@
             + '<div class="store-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M2 3h3l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L23 6H6"/></svg></div>'
             + '<div><div class="store-name">' + esc(s.name || '') + '</div>'
             + '<div class="store-area">' + esc(s.area || '') + since + '</div></div>'
+            + '</div>';
+        }).join('');
+      }
+    }
+
+    var sGrid = document.getElementById('schoolsGrid');
+    if (sGrid){
+      var schools = data.schools || [];
+      if (!schools.length){
+        sGrid.innerHTML = '<div class="stores-empty">Schools coming soon.</div>';
+      } else {
+        sGrid.innerHTML = schools.map(function(s){
+          var nm = (typeof s === 'string') ? s : ((s && s.name) || '');
+          return '<div class="school-card">'
+            + '<div class="school-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 2 9l10 5 10-5-10-5Z"/><path d="M6 11v5c0 1.1 2.7 2.5 6 2.5s6-1.4 6-2.5v-5"/><path d="M22 9v5"/></svg></div>'
+            + '<div class="school-name">' + esc(nm) + '</div>'
             + '</div>';
         }).join('');
       }
