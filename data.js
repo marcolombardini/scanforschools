@@ -18,7 +18,7 @@ window.SFS_DATA = {
      Examples:  1240.80   or   3500   or   0
      (The number below is a sample — replace it with your real total.)
      ---------------------------------------------------------- */
-  raisedUSD: 4.50,
+  raisedUSD: 14.60,
 
 
   /* ----------------------------------------------------------
@@ -38,7 +38,7 @@ window.SFS_DATA = {
      RECEIPTS SCANNED SO FAR (shown as a box in the Impact section)
      Just type the whole number of receipts scanned — no commas.
      ---------------------------------------------------------- */
-  receiptsScanned: 32,
+  receiptsScanned: 43,
 
 
   /* ----------------------------------------------------------
