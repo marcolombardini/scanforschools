@@ -38,7 +38,7 @@ window.SFS_DATA = {
      RECEIPTS SCANNED SO FAR (shown as a box in the Impact section)
      Just type the whole number of receipts scanned — no commas.
      ---------------------------------------------------------- */
-  receiptsScanned: 74,
+  receiptsScanned: 84,
 
 
   /* ----------------------------------------------------------
