@@ -50,6 +50,10 @@ window.SFS_DATA = {
      • name  — the store's name (required)
      • area  — town/city and state (optional)
      • since — the year they joined (optional)
+     • logo  — image file name for the store's logo (optional).
+               Put the image file in this folder and use its name,
+               e.g. logo: "stop-and-shop.svg". If left off, a small
+               shopping-cart icon is shown instead.
 
      TO ADD A STORE: copy one whole line, paste it below the
      others, and edit the text. Keep the comma at the end.
@@ -59,8 +63,7 @@ window.SFS_DATA = {
      (These three are samples — replace them with real stores.)
      ---------------------------------------------------------- */
   stores: [
-    // No stores yet. When one signs up, add a line here like:
-    //   { name: "Store name", area: "Town, State", since: "2026" },
+    { name: "Stop & Shop", area: "Glen Cove, NY", since: "2026", logo: "stop-and-shop.svg" },
   ],
 
 
