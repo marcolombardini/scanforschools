@@ -63,7 +63,7 @@ window.SFS_DATA = {
      (These three are samples — replace them with real stores.)
      ---------------------------------------------------------- */
   stores: [
-    { name: "Stop & Shop", area: "Glen Cove, NY", since: "2026", logo: "stop-and-shop.svg" },
+    { name: "Stop & Shop", area: "Glen Cove, NY", logo: "stop-and-shop.svg" },
   ],
 
 
