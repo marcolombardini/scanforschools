@@ -214,11 +214,13 @@
   /* ---------- stores ---------- */
   .stores-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin-top:2.6rem;}
   .store-card{display:flex;align-items:center;gap:.9rem;background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:1.1rem 1.2rem;}
+  .store-card-logo{flex-direction:column;align-items:flex-start;gap:.55rem;}
   .store-ic{width:40px;height:40px;flex:none;border-radius:10px;background:var(--hero-green);color:var(--marker);display:grid;place-items:center;}
   .store-ic svg{width:20px;height:20px;}
   .store-logo{height:38px;width:auto;max-width:110px;flex:none;object-fit:contain;}
   .store-name{font-family:"Bricolage Grotesque";font-weight:700;font-size:1.05rem;line-height:1.15;}
   .store-area{font-family:"DM Mono",monospace;font-size:.74rem;color:var(--ink-soft);margin-top:.28rem;letter-spacing:.02em;}
+  .store-card-logo .store-area{margin-top:0;}
   .stores-empty{grid-column:1/-1;text-align:center;padding:2.6rem 1rem;border:1.5px dashed var(--line);border-radius:var(--r);color:var(--ink-soft);font-size:1.05rem;}
   .stores-empty a{color:var(--green);font-family:"DM Mono",monospace;font-size:.85rem;white-space:nowrap;text-decoration:none;border-bottom:1.5px solid var(--marker);}
 
@@ -812,6 +814,12 @@
           var mark = s.logo
             ? '<img class="store-logo" src="' + esc(String(s.logo)) + '" alt="" aria-hidden="true">'
             : '<div class="store-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M2 3h3l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L23 6H6"/></svg></div>';
+          if (s.logo){
+            return '<div class="store-card store-card-logo">'
+              + mark
+              + '<div class="store-area">' + detail + '</div>'
+              + '</div>';
+          }
           return '<div class="store-card">'
             + mark
             + '<div><div class="store-name">' + esc(s.name || '') + '</div>'
