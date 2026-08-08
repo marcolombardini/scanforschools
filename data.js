@@ -25,7 +25,7 @@ window.SFS_DATA = {
      FUNDRAISING GOAL (drives the progress bar in the Impact card)
      Set your target dollar amount — no "$" sign, no commas.
      ---------------------------------------------------------- */
-  goalUSD: 5000,
+  goalUSD: 500,
 
 
   /* ----------------------------------------------------------
