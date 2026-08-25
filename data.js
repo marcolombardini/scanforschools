@@ -18,7 +18,7 @@ window.SFS_DATA = {
      Examples:  1240.80   or   3500   or   0
      (The number below is a sample — replace it with your real total.)
      ---------------------------------------------------------- */
-  raisedUSD: 48.70,
+  raisedUSD: 49.50,
 
 
   /* ----------------------------------------------------------
