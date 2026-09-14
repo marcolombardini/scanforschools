@@ -75,7 +75,6 @@ window.SFS_DATA = {
      ---------------------------------------------------------- */
   schools: [
     "Locust Valley Elementary",
-    "Bayville Primary",
     "Bayville Intermediate School",
     "Deasy Elementary School",
     "Gribbin Elementary School",
